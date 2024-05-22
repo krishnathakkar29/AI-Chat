@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { assets } from "../assets/assets";
 
 const Sidebar = () => {
-  const [menu, setMenu] = useState(false);
+  const [menu, setMenu] = useState(true);
 
   return (
     <div className="sidebar min-h-[100vh] inline-flex flex-col justify-between bg-[#f0f4f9] py-6 px-4 ">
