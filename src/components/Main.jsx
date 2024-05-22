@@ -31,6 +31,7 @@ const Main = () => {
     resultData,
     setInput,
     input,
+    generating,
   } = useContext(Context);
 
   return (
@@ -75,7 +76,10 @@ const Main = () => {
                 </div>
               ) : (
                 <>
-                  <p className="text-sm leading-[1.8] font-normal " dangerouslySetInnerHTML={{ __html: resultData }}></p>
+                  <p
+                    className="text-sm leading-[1.8] font-normal "
+                    dangerouslySetInnerHTML={{ __html: resultData }}
+                  ></p>
                 </>
               )}
             </div>
@@ -98,12 +102,18 @@ const Main = () => {
                 className="w-5 inline-block"
               />
               <img src={assets.menu_icon} alt="" className="w-5 inline-block" />
-              <img
-                src={assets.send_icon}
-                alt=""
-                className="w-5 inline-block cursor-pointer"
-                onClick={() => onSent()}
-              />
+              {input && (
+                <button
+                  onClick={() => onSent()}
+                  disabled={loading || generating}
+                >
+                  <img
+                    src={assets.send_icon}
+                    alt=""
+                    className="w-5 inline-block cursor-pointer"
+                  />
+                </button>
+              )}
             </div>
           </div>
           <div className="info text-sm text-gray-600 ml-auto mr-auto mt-3 mb-3 text-center font-normal ">

@@ -1,8 +1,17 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { assets } from "../assets/assets";
+import { Context } from "../context/Context";
 
 const Sidebar = () => {
   const [menu, setMenu] = useState(true);
+
+  const { onSent, previousPrompt, setRecentPrompt, newChat } =
+    useContext(Context);
+
+  const loadPrompt = async (prompt) => {
+    setRecentPrompt(prompt);
+    await onSent(prompt);
+  };
 
   return (
     <div className="sidebar min-h-[100vh] inline-flex flex-col justify-between bg-[#f0f4f9] py-6 px-4 ">
@@ -14,7 +23,10 @@ const Sidebar = () => {
           onClick={() => setMenu((prev) => !prev)}
         />
 
-        <div className="new-chat flex items-center mt-12 gap-3 bg-[#e6eaf1] cursor-pointer text-gray-500 text-sm py-3 px-4 rounded-[50px]">
+        <div
+          onClick={() => newChat()}
+          className="new-chat flex items-center mt-12 gap-3 bg-[#e6eaf1] cursor-pointer text-gray-500 text-sm py-3 px-4 rounded-[50px]"
+        >
           <img className="w-5" src={assets.plus_icon} alt="" />
           {menu && <p>New Chat</p>}
         </div>
@@ -22,10 +34,18 @@ const Sidebar = () => {
         {menu && (
           <div className="recent flex flex-col">
             <p className="recent-title mt-7 mb-5">Recent</p>
-            <div className=" flex items-start gap-3 p-3 pr-10 rounded-[50px] text-[#282828] cursor-pointer hover:bg-[#e2e6eb]">
-              <img src={assets.message_icon} className="w-5" alt="" />
-              <p>What is React...?</p>
-            </div>
+            {previousPrompt.reverse().map((item, index) => {
+              return (
+                <div
+                  onClick={() => loadPrompt(item)}
+                  key={index}
+                  className=" flex items-start gap-3 p-3 pr-10 rounded-[50px] text-[#282828] cursor-pointer hover:bg-[#e2e6eb]"
+                >
+                  <img src={assets.message_icon} className="w-5" alt="" />
+                  <p>{item.slice(0, 18)}...</p>
+                </div>
+              );
+            })}
           </div>
         )}
         {/**/}
